@@ -4,20 +4,20 @@ import java.util.*;
 
 class Validator {
 
-    boolean isValid () {
+    boolean isValid (String enteredExpression) {
 
-        String toValidate = normalizeString();
+        String toValidate = normalizeString(enteredExpression);
         if (toValidate.endsWith("+")||toValidate.endsWith("-")||
                 toValidate.endsWith("/") || toValidate.endsWith("*")) {
             throw new IllegalArgumentException("Incorrect expression.");
         }
-        if (areBracketsEmpty()) {
+        if (areBracketsEmpty(enteredExpression)) {
             throw new IllegalArgumentException("There is empty expression in brackets.");
         }
-        if (!areBracketsBalanced()) {
+        if (!areBracketsBalanced(enteredExpression)) {
             throw new IllegalArgumentException("Brackets are not balanced.");
         }
-        String[] expressionToValidate = splitString();
+        String[] expressionToValidate = splitString(enteredExpression);
         for (String operand : expressionToValidate) {
             try {
                 Double.parseDouble(operand);
@@ -28,21 +28,17 @@ class Validator {
 
         return true;
     }
-    private String[] splitString() {
-        return normalizeString().split("[+\\-*/]");
+    private String[] splitString(String enteredExpression) {
+        return normalizeString(enteredExpression).split("[+\\-*/]");
     }
-    private String normalizeString() {
-        String stringToNormalize = Main.getEnteredExpression();
+    private String normalizeString(String stringToNormalize) {
         stringToNormalize = stringToNormalize.replaceAll("\\(-|[()]", "");
         return stringToNormalize;
     }
-    private boolean areBracketsEmpty() {
-        String expressionToValidate = Main.getEnteredExpression();
+    private boolean areBracketsEmpty(String expressionToValidate) {
         return expressionToValidate.contains("()");
     }
-    private boolean areBracketsBalanced() {
-
-        String expressionToValidate = Main.getEnteredExpression();
+    private boolean areBracketsBalanced(String expressionToValidate) {
         Deque<String> stack = new ArrayDeque<>();
         String delimiters = "()";
         StringTokenizer tokenizer = new StringTokenizer(expressionToValidate, delimiters, true);

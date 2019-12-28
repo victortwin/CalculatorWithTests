@@ -13,18 +13,21 @@ class Terminal {
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             enteredExpression = reader.readLine();
-            if (enteredExpression == null || enteredExpression.length() == 0)
-                throw new IllegalStateException("Expression isn't specified.");
-            enteredExpression = enteredExpression.replaceAll(" ", "")
-                    .replace("(-", "(0-");
-            if (enteredExpression.charAt(0) == '-' || enteredExpression.charAt(0) == '+') {
-                enteredExpression = "0" + enteredExpression;
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         return enteredExpression;
+    }
+
+    String getPreparedString(String stringToPrepare) {
+        if (stringToPrepare == null || stringToPrepare.length() == 0)
+            throw new IllegalArgumentException("Expression is empty.");
+        stringToPrepare = stringToPrepare.replaceAll("\\s", "")
+                .replace("(-", "(0-").replace("(+", "(0+");
+        if (stringToPrepare.charAt(0) == '-' || stringToPrepare.charAt(0) == '+') {
+            stringToPrepare = "0" + stringToPrepare;
+        }
+        return stringToPrepare;
     }
 
     void printResult(BigDecimal calculationResult) {

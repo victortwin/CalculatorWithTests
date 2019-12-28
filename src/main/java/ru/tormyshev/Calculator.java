@@ -1,13 +1,12 @@
 package ru.tormyshev;
 
-import exception.DivisionByZeroException;
 
 import java.math.BigDecimal;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 class Calculator {
-    static BigDecimal calculateExpression(String expression) throws DivisionByZeroException {
+    static BigDecimal calculateExpression(String expression) {
         String reversePolishNotation = Parser.sortingStation(expression);
         StringTokenizer tokenizer = new StringTokenizer(reversePolishNotation, " ");
         Stack<BigDecimal> stack = new Stack<>();
@@ -26,7 +25,7 @@ class Calculator {
                         try {
                             stack.push(operand1.divide(operand2, 6, BigDecimal.ROUND_HALF_UP));
                         } catch (ArithmeticException e) {
-                            throw new DivisionByZeroException("Expression contains division by zero.");
+                            throw new IllegalArgumentException("Expression contains division by zero.");
                         }
                         break;
                     case "+":
